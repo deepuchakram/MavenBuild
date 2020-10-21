@@ -16,8 +16,8 @@ node('master') {
 	}
 
 	stage ('Archive Artifacts'){
-		archiveArtifacts(artifacts: 'target/*.war', fingerprint: true) 
-		shell "mvn insall tomcat7:deploy"
+		//archiveArtifacts(artifacts: 'target/*.war', fingerprint: true) 
+		//shell "mvn insall tomcat7:deploy"
 	}
 	
 	stage ('Deployment'){
