@@ -12,7 +12,7 @@ node('master') {
 	}
 
 	stage ('Sonar Analysis'){
-		//shell 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9005'
+		shell 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9005'
 	}
 
 	stage ('Archive Artifacts'){
@@ -20,7 +20,7 @@ node('master') {
 	}
 	
 	stage ('Deployment'){
-		//shell 'cp target/*.war /C:/Users/Apache Software Foundation/apache-tomcat-8.5.58/webapps'
+		shell 'cp target/*.war /C:/Users/Apache Software Foundation/apache-tomcat-8.5.58/webapps'
 	}
 	stage ('Notification'){
 		slackSend color: 'good', message: 'Deployment Sucessful'
