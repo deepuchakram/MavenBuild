@@ -4,15 +4,15 @@ node('master') {
 	}
 	
 	stage ('Build'){
-		sh "mvn clean install -Dmaven.test.skip=true"
+		shell "mvn clean install -Dmaven.test.skip=true"
 	}
 
 	stage ('Test Cases Execution'){
-		sh "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Pcoverage-per-test"
+		shell "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Pcoverage-per-test"
 	}
 
 	stage ('Sonar Analysis'){
-		//sh 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9000'
+		//shell 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9005'
 	}
 
 	stage ('Archive Artifacts'){
@@ -20,14 +20,15 @@ node('master') {
 	}
 	
 	stage ('Deployment'){
-		//sh 'cp target/*.war /opt/tomcat8/webapps'
+		//shell 'cp target/*.war /opt/tomcat8/webapps'
+		//shell cp target/*.war/C:/Users/Apache Software Foundation/apache-tomcat-8.5.58/webapps
 	}
 	stage ('Notification'){
 		//slackSend color: 'good', message: 'Deployment Sucessful'
 		emailext (
 		      subject: "Job Completed",
 		      body: "Jenkins Pipeline Job for Maven Build got completed !!!",
-		      to: "anuj_sharma401@yahoo.com"
+		      to: "sudeepthi_chakram@hcl.com"
 		    )
 	}
 }
