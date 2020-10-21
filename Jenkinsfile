@@ -15,9 +15,9 @@ node('master') {
 		shell 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9005'
 	}
 
-	stage ('Archive Artifacts'){
-		junit '**/target/surefire-reports/TEST-*.xml'
-      archiveArtifacts 'target/*.jar'
+	//stage ('Archive Artifacts'){
+		//junit '**/target/surefire-reports/TEST-*.xml'
+      //archiveArtifacts 'target/*.jar'
 		//archiveArtifacts(artifacts: 'target/*.war', fingerprint: true) 
 		//shell "mvn insall tomcat7:deploy"
 		//deploy adapters: [tomcat7(credentialsId: '8217496f-3b5c-4dab-9bdf-e30380271946', path: '', url: 'http://192.168.0.106:8086')], contextPath: 'rps', war: '*/*.war'
