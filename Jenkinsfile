@@ -16,7 +16,7 @@ node('master') {
 	}
 
 	stage ('Archive Artifacts'){
-		archiveArtifacts artifacts: '/**/*.war', followSymlinks: false
+		archiveArtifacts(artifacts: 'target/*.war', fingerprint: true) 
 		shell "mvn insall tomcat7:deploy"
 	}
 	
