@@ -5,7 +5,7 @@ node('master') {
 	
 	stage ('Build'){
 		shell "mvn clean install -Dmaven.test.skip=true"
-	}
+	}    
 
 	stage ('Test Cases Execution'){
 		shell "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Pcoverage-per-test"
@@ -16,7 +16,8 @@ node('master') {
 	}
 
 	stage ('Archive Artifacts'){
-		archiveArtifacts artifacts: 'target/**.war'  
+		archiveArtifacts artifacts: 'target **/*.war'  
+		shell "mvn insall tomcat7:deploy"
 	}
 	
 	stage ('Deployment'){
