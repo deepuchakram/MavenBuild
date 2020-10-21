@@ -16,7 +16,7 @@ node('master') {
 	}
 
 	stage ('Archive Artifacts'){
-		archiveArtifacts artifacts: '*.war'
+		archiveArtifacts artifacts: 'target/*.war'
 	}
 	
 	stage ('Deployment'){
