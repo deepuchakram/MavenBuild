@@ -35,7 +35,7 @@ node('master') {
             //bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean deploy/)
          //}
       //}
-   //}
+   }
 	//Stage ('Upload war To Nexus'){
 		
 	//shell nexusArtifactUploader credentialsId: 'nexus', groupId: 'maven-build', nexusUrl: '192.168.0.106:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-build-snapshot', version: '1.0.0'
