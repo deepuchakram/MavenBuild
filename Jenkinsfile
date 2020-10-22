@@ -26,6 +26,16 @@ node('master') {
 		shell "mvn insall tomcat7:deploy"
 		//deploy adapters: [tomcat7(credentialsId: '8217496f-3b5c-4dab-9bdf-e30380271946', path: '', url: 'http://192.168.0.106:8086')], contextPath: 'rps', war: '*/*.war'
 	}
+	stage('Push to Nexus') {
+      // Run the maven build
+      withEnv(["MVN_HOME=$mvnHome"]) {
+         if (isUnix()) {
+            shell '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean deploy'
+         } else {
+            bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean deploy/)
+         }
+      }
+   }
 	
 	stage ('Deployment'){
 		shell 'cp target/*.war /C:/Users/Apache Software Foundation/apache-tomcat-8.5.58/webapps'
