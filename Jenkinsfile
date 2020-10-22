@@ -3,19 +3,21 @@ node('master') {
 		checkout scm
 	}
 	
-	stage ('Build'){
+	stage ('Compile'){
 		shell "mvn clean install -Dmaven.test.skip=true"
-	}    
+	}  
+	
+	stage ('Test Cases Execution'){
+		shell "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Pcoverage-per-test"
+	}
 	
 	stage ('Sonar Analysis'){
 		shell 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9005'
 	}
 
-
-	stage ('Test Cases Execution'){
-		shell "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Pcoverage-per-test"
-	}
-
+	stage ('Build'){
+		shell "mvn clean install package -Dmaven.test.skip=true"
+	
 	
 	stage ('Archive Artifacts'){
 		//junit '**/target/surefire-reports/TEST-*.xml'
