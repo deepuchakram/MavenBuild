@@ -46,25 +46,10 @@ node('master') {
       //}
    //}
 	Stage ('Upload war To Nexus'){
+		
+	shell nexusArtifactUploader credentialsId: 'nexus', groupId: 'maven-build', nexusUrl: '192.168.0.106:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-build-snapshot', version: '1.0.0'
 
-		shell nexusArtifactsUploader artifacts: [
-[ 
-artifactId: ‘maven-build’
-classifier: ‘ ‘,
-file: ‘target/maven-build-1.0.0.war’,
-type: ‘war’
-]
-],
-credentialsId: ‘nexus’
-groupId: ‘in.mavenspring’,
-nexusUrl: ‘192.168.0.106:8081’,
-nexusVersion: ’nexus3’,
-protocol: ‘http’,
-repository: ‘maven-build-release’,
-version: ‘1.0.0’
-}
-
-
+	}	
 	
 	stage ('Deployment'){
 		shell 'cp target/*.war /C:/Users/Apache Software Foundation/apache-tomcat-8.5.58/webapps'
