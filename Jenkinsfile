@@ -14,6 +14,15 @@ node('master') {
 	stage ('Sonar Analysis'){
 		shell 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9005'
 	}
+	
+	stage("Quality Gate"){
+    timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+    if (qg.status != 'OK') {
+        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+    }
+  }
+}
 
 	stage ('Build'){
 		shell "mvn clean install package -Dmaven.test.skip=true"
@@ -38,7 +47,6 @@ node('master') {
    //}
 	Stage(‘Upload war To Nexus’){
 
-Steps{
 	nexusArtifactsUploader artifacts: [
 [ 
 artifactId: ‘maven-build’
@@ -55,7 +63,7 @@ protocol: ‘http’,
 repository: ‘maven-build-release’,
 version: ‘1.0.0’
 }
-}
+
 
 	
 	stage ('Deployment'){
