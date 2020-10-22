@@ -17,7 +17,7 @@ node('master') {
 
 	stage ('Build'){
 		shell "mvn clean install package -Dmaven.test.skip=true"
-	
+	}
 	
 	stage ('Archive Artifacts'){
 		//junit '**/target/surefire-reports/TEST-*.xml'
