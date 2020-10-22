@@ -6,15 +6,17 @@ node('master') {
 	stage ('Build'){
 		shell "mvn clean install -Dmaven.test.skip=true"
 	}    
+	
+	stage ('Sonar Analysis'){
+		shell 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9005'
+	}
+
 
 	stage ('Test Cases Execution'){
 		shell "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Pcoverage-per-test"
 	}
 
-	stage ('Sonar Analysis'){
-		shell 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9005'
-	}
-
+	
 	stage ('Archive Artifacts'){
 		//junit '**/target/surefire-reports/TEST-*.xml'
       //archiveArtifacts 'target/*.jar'
