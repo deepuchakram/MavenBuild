@@ -14,16 +14,7 @@ node('master') {
 	stage ('Sonar Analysis'){
 		shell 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9005'
 	}
-	
-	stage("Quality Gate"){
-             timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
-    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-    if (qg.status != 'OK') {
-        error "Pipeline aborted due to quality gate failure: ${qg.status}"
-    }
-  }
-}
-
+		
 	stage ('Build'){
 		shell "mvn clean install package -Dmaven.test.skip=true"
 	}
@@ -35,11 +26,11 @@ node('master') {
 		shell "mvn insall tomcat7:deploy"
 		//deploy adapters: [tomcat7(credentialsId: '8217496f-3b5c-4dab-9bdf-e30380271946', path: '', url: 'http://192.168.0.106:8086')], contextPath: 'rps', war: '*/*.war'
 	}
-	//stage('Push to Nexus') {
+	stage('Push to Nexus') {
       // Run the maven build
       //withEnv(["MVN_HOME=$mvnHome"]) {
          //if (isUnix()) {
-           // shell '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean deploy'
+           shell '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean deploy'
          //} else {
             //bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean deploy/)
          //}
