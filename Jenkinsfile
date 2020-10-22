@@ -45,9 +45,9 @@ node('master') {
          //}
       //}
    //}
-	Stage (‘Upload war To Nexus’){
+	Stage ('Upload war To Nexus'){
 
-	nexusArtifactsUploader artifacts: [
+	 shell nexusArtifactsUploader artifacts: [
 [ 
 artifactId: ‘maven-build’
 classifier: ‘ ‘,
