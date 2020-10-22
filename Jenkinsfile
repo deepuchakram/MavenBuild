@@ -26,16 +26,37 @@ node('master') {
 		shell "mvn insall tomcat7:deploy"
 		//deploy adapters: [tomcat7(credentialsId: '8217496f-3b5c-4dab-9bdf-e30380271946', path: '', url: 'http://192.168.0.106:8086')], contextPath: 'rps', war: '*/*.war'
 	}
-	stage('Push to Nexus') {
+	//stage('Push to Nexus') {
       // Run the maven build
-      withEnv(["MVN_HOME=$mvnHome"]) {
+      //withEnv(["MVN_HOME=$mvnHome"]) {
          //if (isUnix()) {
-            shell '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean deploy'
+           // shell '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean deploy'
          //} else {
             //bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean deploy/)
-         }
-      }
+         //}
+      //}
    //}
+	Stage(‘Upload war To Nexus’){
+
+Steps{
+	nexusArtifactsUploader artifacts: [
+[ 
+artifactId: ‘maven-build’
+classifier: ‘ ‘,
+file: ‘target/maven-build-1.0.0.war’,
+type: ‘war’
+]
+],
+credentialsId: ‘nexus’
+groupId: ‘in.mavenspring’,
+nexusUrl: ‘192.168.0.106:8081’,
+nexusVersion: ’nexus3’,
+protocol: ‘http’,
+repository: ‘maven-build-release’,
+version: ‘1.0.0’
+}
+}
+
 	
 	stage ('Deployment'){
 		shell 'cp target/*.war /C:/Users/Apache Software Foundation/apache-tomcat-8.5.58/webapps'
